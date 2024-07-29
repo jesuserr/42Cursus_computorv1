@@ -1,7 +1,5 @@
 import sys
 
-############################### CONSTANTS & INITS ##############################
-#################################### CLASSES ###################################
 ################################### FUNCTIONS ##################################
 
 def gcd(a, b):
@@ -18,7 +16,7 @@ def decimal_to_fraction(number):
     denominator = precision // gcd_value
     return (f"Irreducible fraction: {(integer_part * denominator) + numerator} / {denominator}")
 
-def print_reduced_form(coefficients):    
+def print_reduced_form(coefficients):
     grade = 0
     print("Reduced form: ", end="")
     for coefficient in coefficients:
@@ -51,7 +49,7 @@ def print_results(discriminant, numerator1, numerator2, denominator):
     print(f"{numerator1 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator1 / denominator))
     print(f"{numerator2 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator2 / denominator))
 
-def solver(arguments):    
+def solver(arguments):
     c = float(arguments.split(" ")[0])
     b = float(arguments.split(" ")[1])
     a = float(arguments.split(" ")[2])
@@ -59,12 +57,18 @@ def solver(arguments):
     coefficients.append(c)
     coefficients.append(b)
     coefficients.append(a)
-    discriminant = (b ** 2) - (4 * a *c)
-    numerator1 = -b - (discriminant) ** 0.5
-    numerator2 = -b + (discriminant) ** 0.5
-    denominator = 2 * a
-    print_reduced_form(coefficients)
-    print_results(discriminant, numerator1, numerator2, denominator)
+    if a != 0:
+        discriminant = (b ** 2) - (4 * a *c)
+        numerator1 = -b - (discriminant) ** 0.5
+        numerator2 = -b + (discriminant) ** 0.5
+        denominator = 2 * a
+        print_reduced_form(coefficients)
+        print_results(discriminant, numerator1, numerator2, denominator)
+    else:
+        coefficients.pop()
+        print_reduced_form(coefficients)
+        print("The solution is:")
+        print(f"{c / -b:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(c / -b))
 
 ################################# MAIN FUNCTION ################################
 
@@ -97,4 +101,5 @@ if __name__ == '__main__':
 # 3x^2-2x=0 (0, 2/3) no funciona la fraccion
 
 # TODOs:
+# improve decimal_to_fraction
 # irreducible fraction for complex numbers
