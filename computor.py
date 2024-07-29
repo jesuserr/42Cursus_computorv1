@@ -29,6 +29,10 @@ def print_reduced_form(coefficients):
         elif coefficient < 0:
             print(f"- ", end="")
             print(f"{abs(coefficient)}".rstrip('0').rstrip('.') + f" * X^{grade} ", end="")
+        else:
+            if grade != 0:
+                print(f"+ ", end="")
+            print(f"0" + f" * X^{grade} ", end="")
         if (grade == len(coefficients) - 1):
             print("= 0")
             break
@@ -47,14 +51,14 @@ def print_results(discriminant, numerator1, numerator2, denominator):
     print(f"{numerator1 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator1 / denominator))
     print(f"{numerator2 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator2 / denominator))
 
-def solver(arguments):
-    coefficients = []
+def solver(arguments):    
     c = float(arguments.split(" ")[0])
-    coefficients.append(c)
     b = float(arguments.split(" ")[1])
-    coefficients.append(b)
     a = float(arguments.split(" ")[2])
-    coefficients.append(a)    
+    coefficients = []
+    coefficients.append(c)
+    coefficients.append(b)
+    coefficients.append(a)
     discriminant = (b ** 2) - (4 * a *c)
     numerator1 = -b - (discriminant) ** 0.5
     numerator2 = -b + (discriminant) ** 0.5
@@ -71,23 +75,23 @@ if __name__ == '__main__':
         exit(1)    
     solver(sys.argv[1])
 
-# python3 computor.py "2x^2-5x+3=0"     -> two solutions
-# python3 computor.py "2 -5 3"
+# "2x^2-5x+3=0"     -> two solutions
+# python3 computor.py "3 -5 2"
 
-# python3 computor.py "x^2-4x+4=0"      -> two identical solutions
-# python3 computor.py "1 -4 4"
+# "x^2-4x+4=0"      -> two identical solutions
+# python3 computor.py "4 -4 1"
 
-# python3 computor.py "x^2-10x+25=0"    -> two identical solutions
-# python3 computor.py "1 -10 25"
+# "x^2-10x+25=0"    -> two identical solutions
+# python3 computor.py "25 -10 1"
 
-# python3 computor.py "x^2-4x+5=0"      -> complex
-# python3 computor.py "1 -4 5"
+# "x^2-4x+5=0"      -> complex
+# python3 computor.py "5 -4 1"
 
-# python3 computor.py "x^2-x+1=0"       -> complex
+# "x^2-x+1=0"       -> complex
 # python3 computor.py "1 -1 1"
 
 # python3 computor.py "4 * X^0 + 4 * X^1 - 9.3 * X^2 = 0"
-# python3 computor.py "-9.3 4 4"
+# python3 computor.py "4 4 -9.3"
 
 # 3x^2-10x+7=0 (7/3 , 1) no funciona la fraccion
 # 3x^2-2x=0 (0, 2/3) no funciona la fraccion
