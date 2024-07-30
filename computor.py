@@ -1,6 +1,13 @@
 import sys
 
+################################### CONSTANTS ##################################
+
+DECIMAL_PRECISION = ".9f"
+
 ################################### FUNCTIONS ##################################
+
+def strip(number, justify=0):
+    return f"{number:{DECIMAL_PRECISION}}".rstrip('0').rstrip('.').ljust(justify)
 
 def gcd(a, b):
     while b:
@@ -14,7 +21,8 @@ def decimal_to_fraction(number):
     gcd_value = gcd(round(fractional_part * precision), precision)
     numerator = round(fractional_part * precision) // gcd_value
     denominator = precision // gcd_value
-    return (f"Irreducible fraction: {(integer_part * denominator) + numerator} / {denominator}")
+    string = f"{(integer_part * denominator) + numerator} / {denominator}"
+    return (f"Irreducible fraction: {string}")
 
 def print_reduced_form(coefficients):
     grade = 0
@@ -23,10 +31,10 @@ def print_reduced_form(coefficients):
         if coefficient > 0:
             if grade != 0:
                 print(f"+ ", end="")
-            print(f"{coefficient}".rstrip('0').rstrip('.') + f" * X^{grade} ", end="")
+            print(f"{strip(coefficient)}"+ f" * X^{grade} ", end="")
         elif coefficient < 0:
             print(f"- ", end="")
-            print(f"{abs(coefficient)}".rstrip('0').rstrip('.') + f" * X^{grade} ", end="")
+            print(f"{strip(abs(coefficient))}" + f" * X^{grade} ", end="")
         else:
             if grade != 0:
                 print(f"+ ", end="")
@@ -44,11 +52,19 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
         print("Discriminant is zero, the two solutions are identical:")
     else:
         print("Discriminant is strictly negative, the two complex solutions are:")
-        print(f"{numerator1 / denominator:.9f}".ljust(30) + "->\t" + f"{decimal_to_fraction(-b / denominator)}".rstrip('0').rstrip('.') + " - (√" + f"{discriminant:.9f}".rstrip('0').rstrip('.') + " / " f"{denominator:.9f}".rstrip('0').rstrip('.') + ")")
-        print(f"{numerator2 / denominator:.9f}".ljust(30) + "->\t" + f"{decimal_to_fraction(-b / denominator)}".rstrip('0').rstrip('.') + " + (√" + f"{discriminant:.9f}".rstrip('0').rstrip('.') + " / " f"{denominator:.9f}".rstrip('0').rstrip('.') + ")")
+        print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
+        print(decimal_to_fraction(-b / denominator), end="")
+        print(" - (√" + f"{strip(discriminant)}" + " / ", end="")
+        print(f"{strip(denominator)}" + ")")
+        print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
+        print(decimal_to_fraction(-b / denominator), end="")
+        print(" + (√" + f"{strip(discriminant)}" + " / ", end="")
+        print(f"{strip(denominator)}" + ")")
         return
-    print(f"{numerator1 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator1 / denominator))
-    print(f"{numerator2 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator2 / denominator))
+    print(f"{strip(numerator1 / denominator, 20)}" + "->\t", end="")
+    print(decimal_to_fraction(numerator1 / denominator))
+    print(f"{strip(numerator2 / denominator, 20)}" + "->\t", end="")
+    print(decimal_to_fraction(numerator2 / denominator))
 
 def solver(a, b, c):
     if a != 0:
@@ -62,7 +78,7 @@ def solver(a, b, c):
         coefficients.pop()
         print_reduced_form(coefficients)
         print("The solution is:")
-        print(f"{c / -b:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(c / -b))
+        print(f"{strip(c / -b, 20)}" + "->\t" + decimal_to_fraction(c / -b))
 
 def parser(arguments):
     coefficients = []
@@ -107,4 +123,3 @@ if __name__ == '__main__':
 
 # TODOs:
 # improve decimal_to_fraction
-# irreducible fraction for complex numbers (DONE)
