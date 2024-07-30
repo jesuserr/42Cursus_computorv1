@@ -61,9 +61,9 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
         print(" + (√" + f"{strip(discriminant)}" + " / ", end="")
         print(f"{strip(denominator)}" + ")")
         return
-    print(f"{strip(numerator1 / denominator, 20)}" + "->\t", end="")
+    print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator1 / denominator))
-    print(f"{strip(numerator2 / denominator, 20)}" + "->\t", end="")
+    print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator2 / denominator))
 
 def solver(a, b, c):
@@ -78,7 +78,7 @@ def solver(a, b, c):
         coefficients.pop()
         print_reduced_form(coefficients)
         print("The solution is:")
-        print(f"{strip(c / -b, 20)}" + "->\t" + decimal_to_fraction(c / -b))
+        print(f"{strip(c / -b, 30)}" + "->\t" + decimal_to_fraction(c / -b))
 
 def parser(arguments):
     coefficients = []
