@@ -37,14 +37,15 @@ def print_reduced_form(coefficients):
         grade += 1
     print(f"Polynomial degree: " + str((len(coefficients) - 1)))
 
-def print_results(discriminant, numerator1, numerator2, denominator):
+def print_results(discriminant, numerator1, numerator2, denominator, b):
     if discriminant > 0:
         print("Discriminant is strictly positive, the two solutions are:")
     elif discriminant == 0:
         print("Discriminant is zero, the two solutions are identical:")
     else:
         print("Discriminant is strictly negative, the two complex solutions are:")
-        print(f"{numerator1 / denominator:.9f}" + "\n" + f"{numerator2 / denominator:.9f}")
+        print(f"{numerator1 / denominator:.9f}".ljust(30) + "->\t" + f"{decimal_to_fraction(-b / denominator)}".rstrip('0').rstrip('.') + " - (√" + f"{discriminant:.9f}".rstrip('0').rstrip('.') + " / " f"{denominator:.9f}".rstrip('0').rstrip('.') + ")")
+        print(f"{numerator2 / denominator:.9f}".ljust(30) + "->\t" + f"{decimal_to_fraction(-b / denominator)}".rstrip('0').rstrip('.') + " + (√" + f"{discriminant:.9f}".rstrip('0').rstrip('.') + " / " f"{denominator:.9f}".rstrip('0').rstrip('.') + ")")
         return
     print(f"{numerator1 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator1 / denominator))
     print(f"{numerator2 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator2 / denominator))
@@ -56,7 +57,7 @@ def solver(a, b, c):
         numerator2 = -b + (discriminant) ** 0.5
         denominator = 2 * a
         print_reduced_form(coefficients)
-        print_results(discriminant, numerator1, numerator2, denominator)
+        print_results(discriminant, numerator1, numerator2, denominator, b)
     else:
         coefficients.pop()
         print_reduced_form(coefficients)
@@ -106,4 +107,4 @@ if __name__ == '__main__':
 
 # TODOs:
 # improve decimal_to_fraction
-# irreducible fraction for complex numbers
+# irreducible fraction for complex numbers (DONE)
