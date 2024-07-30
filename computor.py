@@ -49,14 +49,7 @@ def print_results(discriminant, numerator1, numerator2, denominator):
     print(f"{numerator1 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator1 / denominator))
     print(f"{numerator2 / denominator:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(numerator2 / denominator))
 
-def solver(arguments):
-    c = float(arguments.split(" ")[0])
-    b = float(arguments.split(" ")[1])
-    a = float(arguments.split(" ")[2])
-    coefficients = []
-    coefficients.append(c)
-    coefficients.append(b)
-    coefficients.append(a)
+def solver(a, b, c):
     if a != 0:
         discriminant = (b ** 2) - (4 * a *c)
         numerator1 = -b - (discriminant) ** 0.5
@@ -70,14 +63,25 @@ def solver(arguments):
         print("The solution is:")
         print(f"{c / -b:.9f}".rstrip('0').rstrip('.').ljust(20) + "->\t" + decimal_to_fraction(c / -b))
 
+def parser(arguments):
+    coefficients = []
+    for argument in arguments.split(" "):
+        coefficients.append(float(argument))
+    return coefficients
+
 ################################# MAIN FUNCTION ################################
 
 if __name__ == '__main__':
     if (len(sys.argv) != 2):
         print("Invalid number of arguments")
         print("Usage: python3 computor.py \"equation\"")
-        exit(1)    
-    solver(sys.argv[1])
+        exit(1)
+    coefficients = parser(sys.argv[1])
+    if (len(coefficients) <= 3):
+        solver(coefficients[2], coefficients[1], coefficients[0])
+    else:
+        print_reduced_form(coefficients)
+        print("The polynomial degree is strictly greater than 2, I can't solve.")
 
 # "2x^2-5x+3=0"     -> two solutions
 # python3 computor.py "3 -5 2"
