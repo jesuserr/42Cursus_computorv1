@@ -45,6 +45,12 @@ def print_reduced_form(coefficients):
         grade += 1
     print(f"Polynomial degree: " + str((len(coefficients) - 1)))
 
+def print_complex_solution(numerator, denominator, discriminant, b, sign):
+    print(f"{strip(numerator / denominator, 30)}" + "->\t", end="")
+    print(decimal_to_fraction(-b / denominator), end="")
+    print(f" {sign}" + " (√" + f"{strip(discriminant)}" + " / ", end="")
+    print(f"{strip(denominator)}" + ")")
+
 def print_results(discriminant, numerator1, numerator2, denominator, b):
     if discriminant > 0:
         print("Discriminant is strictly positive, the two solutions are:")
@@ -52,14 +58,8 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
         print("Discriminant is zero, the two solutions are identical:")
     else:
         print("Discriminant is strictly negative, the two complex solutions are:")
-        print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
-        print(decimal_to_fraction(-b / denominator), end="")
-        print(" - (√" + f"{strip(discriminant)}" + " / ", end="")
-        print(f"{strip(denominator)}" + ")")
-        print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
-        print(decimal_to_fraction(-b / denominator), end="")
-        print(" + (√" + f"{strip(discriminant)}" + " / ", end="")
-        print(f"{strip(denominator)}" + ")")
+        print_complex_solution(numerator1, denominator, discriminant, b, sign="-")
+        print_complex_solution(numerator2, denominator, discriminant, b, sign="+")
         return
     print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator1 / denominator))
@@ -80,7 +80,27 @@ def solver(a, b, c):
         print("The solution is:")
         print(f"{strip(c / -b, 30)}" + "->\t" + decimal_to_fraction(c / -b))
 
+def parser_2(arguments):
+    allowed_chars = "0123456789*+-xX^=. "
+    if not all(char in allowed_chars for char in arguments):
+        raise ValueError("Invalid characters in input")
+    arguments_no_blanks = arguments.replace(" ", "")
+    invalid_sequences = ["**", "++", "--", "xx", "XX", "xX", "Xx" , "^^", "=="]
+    invalid_sequences += ["..", "+-", "-+"]
+    for seq in invalid_sequences:
+        if seq in arguments_no_blanks:
+            raise ValueError(f"Invalid sequence found: {seq}")
+    identity_sides = arguments_no_blanks.split("=")
+    if len(identity_sides) != 2:
+        raise ValueError("Invalid number of equal signs")
+    if identity_sides[0] == "" or identity_sides[1] == "":
+        raise ValueError("Invalid number of expressions")        
+    print(arguments)
+    print(arguments_no_blanks)
+    print(identity_sides)
+
 def parser(arguments):
+    parser_2(arguments)
     coefficients = []
     for argument in arguments.split(" "):
         coefficients.append(float(argument))
@@ -93,12 +113,16 @@ if __name__ == '__main__':
         print("Invalid number of arguments")
         print("Usage: python3 computor.py \"equation\"")
         exit(1)
-    coefficients = parser(sys.argv[1])
-    if (len(coefficients) <= 3):
-        solver(coefficients[2], coefficients[1], coefficients[0])
-    else:
-        print_reduced_form(coefficients)
-        print("The polynomial degree is strictly greater than 2, I can't solve.")
+    try:
+        coefficients = parser(sys.argv[1])
+        if (len(coefficients) <= 3):
+            solver(coefficients[2], coefficients[1], coefficients[0])
+        else:
+            print_reduced_form(coefficients)
+            print("The polynomial degree is strictly greater than 2, I can't solve.")
+    except ValueError as error:
+        print(error)
+        exit(1)
 
 # "2x^2-5x+3=0"     -> two solutions
 # python3 computor.py "3 -5 2"
