@@ -7,6 +7,8 @@ DECIMAL_PRECISION = ".9f"
 ################################### FUNCTIONS ##################################
 
 def strip(number, justify=0):
+    if number == -0:
+        number = 0
     return f"{number:{DECIMAL_PRECISION}}".rstrip('0').rstrip('.').ljust(justify)
 
 def gcd(a, b):
@@ -144,6 +146,3 @@ if __name__ == '__main__':
 
 # 3x^2-10x+7=0 (7/3 , 1) no funciona la fraccion
 # 3x^2-2x=0 (0, 2/3) no funciona la fraccion
-
-# TODOs:
-# improve decimal_to_fraction
