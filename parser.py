@@ -5,8 +5,8 @@ def pre_parser(arguments):
     allowed_chars = "0123456789*+-xX^=. "
     if not all(char in allowed_chars for char in arguments):
         raise ValueError("Invalid characters in input")
-    if re.search(r'\d+\s+\d+', arguments):
-        raise ValueError("Invalid digits separated by spaces")
+    if re.search(r'(\d+|\.+)\s+(\d+|\.+)', arguments):
+        raise ValueError("Invalid digits separation")
     arguments_no_blanks = arguments.replace(" ", "")
     invalid_sequences = ["**", "++", "--", "xx", "XX", "xX", "Xx" , "^^", "=="]
     invalid_sequences += ["..", "+-", "-+", "^-", "^+", "-*", "+*", "*-", "*+"]
@@ -41,13 +41,13 @@ def parser(arguments):
     max_degree = find_max_degree(left_terms, right_terms)
     coefficients = [0.0] * max(3, max_degree + 1)
     for term in left_terms:
-        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', term)
+        match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
         if match and len(match[0]) == 2:
             coefficients[int(match[0][1])] += float(match[0][0])
         else:
             raise ValueError(f"Invalid term format: {term}")
     for term in right_terms:
-        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', term)
+        match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
         if match and len(match[0]) == 2:
             coefficients[int(match[0][1])] += -1 * float(match[0][0])
         else:
