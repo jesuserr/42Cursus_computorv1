@@ -36,7 +36,8 @@ def parser(arguments):
     right_terms = re.split(r'(?=[+-])', identity_sides[1])
     left_terms = [term for term in left_terms if term]
     right_terms = [term for term in right_terms if term]
-    coefficients = [0.0] * max(3, find_max_degree(left_terms, right_terms) + 1)
+    max_degree = find_max_degree(left_terms, right_terms)
+    coefficients = [0.0] * max(3, max_degree + 1)
     for terms in left_terms:
         match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', terms)
         if match:
@@ -48,4 +49,4 @@ def parser(arguments):
     print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
     print(find_max_degree(left_terms, right_terms))
     print(coefficients)
-    return coefficients
+    return coefficients, max_degree
