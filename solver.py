@@ -65,12 +65,12 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
 def solver(coefficients, max_degree):
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     if (a == 0 and b == 0 and c != 0):
-        raise ValueError(f"Inconsistent equation" + "\n" + "No solutions")
+        raise ValueError(f"Inconsistent equation." + "\n" + "No possible solutions.")
     if (a == 0 and b == 0 and c == 0 and max_degree == 0):
-        raise ValueError(f"Polynomial degree: 0 \nIdentity equation")
+        raise ValueError(f"Polynomial degree: 0 \nIdentity equation.")
     if (a == 0 and b == 0 and c == 0 and max_degree > 0):
         raise ValueError(f"Polynomial degree: " + str(max_degree) +
-        "\nInfinite solutions")
+        "\nInfinite solutions.")
     if (len(coefficients) > 3):
         print_reduced_form(coefficients)
         raise ValueError("The polynomial degree is strictly greater than 2" +
