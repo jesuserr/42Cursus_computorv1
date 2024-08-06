@@ -1,0 +1,51 @@
+import re
+from itertools import chain
+
+def pre_parser(arguments):
+    allowed_chars = "0123456789*+-xX^=. "
+    if not all(char in allowed_chars for char in arguments):
+        raise ValueError("Invalid characters in input")
+    arguments_no_blanks = arguments.replace(" ", "")
+    invalid_sequences = ["**", "++", "--", "xx", "XX", "xX", "Xx" , "^^", "=="]
+    invalid_sequences += ["..", "+-", "-+", "^-", "^+", "-*", "+*", "*-", "*+"]
+    invalid_sequences += ["-^", "+^"]
+    for seq in invalid_sequences:
+        if seq in arguments_no_blanks:
+            raise ValueError(f"Invalid sequence found: {seq}")
+    identity_sides = arguments_no_blanks.split("=")
+    if len(identity_sides) != 2:
+        raise ValueError("Invalid number of equal signs")
+    if identity_sides[0] == "" or identity_sides[1] == "":
+        raise ValueError("Invalid number of expressions")
+    return(identity_sides)
+
+def find_max_degree(left_terms, right_terms):
+    max_degree = 0
+    for terms in chain(left_terms, right_terms):
+        if re.search(r'[xX]\^\d+\.\d+', terms):
+            raise ValueError("Invalid exponent, must be integer")
+        match = re.findall(r'[xX]\^(\d+)', terms)
+        if match:
+            if int(match[0]) > max_degree:
+                max_degree = int(match[0])
+    return max_degree
+
+def parser(arguments):
+    identity_sides = pre_parser(arguments)
+    left_terms = re.split(r'(?=[+-])', identity_sides[0])
+    right_terms = re.split(r'(?=[+-])', identity_sides[1])
+    left_terms = [term for term in left_terms if term]
+    right_terms = [term for term in right_terms if term]
+    coefficients = [0.0] * max(3, find_max_degree(left_terms, right_terms) + 1)
+    for terms in left_terms:
+        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', terms)
+        if match:
+            coefficients[int(match[0][1])] += float(match[0][0])
+    for terms in right_terms:
+        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', terms)
+        if match:
+            coefficients[int(match[0][1])] += -1 * float(match[0][0])
+    print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
+    print(find_max_degree(left_terms, right_terms))
+    print(coefficients)
+    return coefficients
