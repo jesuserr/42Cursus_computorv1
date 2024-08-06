@@ -70,17 +70,7 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator2 / denominator))
 
-def solver(coefficients):
-    a = coefficients[2]
-    b = coefficients[1]
-    c = coefficients[0]
-    if (a == 0 and b == 0 and c == 0):
-        raise ValueError(f"Reduced form: 0 * X^0 = 0" + "\n" + 
-        "Polynomial degree: 0" + "\n" + "Infinite solutions")        
-    if (len(coefficients) > 3):
-        print_reduced_form(coefficients)
-        raise ValueError("The polynomial degree is strictly greater than 2" +
-        ", I can't solve.")
+def solver(a, b, c):
     if a != 0:
         discriminant = (b ** 2) - (4 * a *c)
         numerator1 = -b - (discriminant) ** 0.5
@@ -152,7 +142,14 @@ if __name__ == '__main__':
         exit(1)
     try:
         coefficients = parser(sys.argv[1])
-        solver(coefficients)
+        if (coefficients[0] == 0 and coefficients[1] == 0 and coefficients[2] == 0):
+            print("Reduced form: 0 * X^0 = 0")
+            print(f"Polynomial degree: 0" + "\n" + "Infinite solutions")
+        elif (len(coefficients) <= 3):
+            solver(coefficients[2], coefficients[1], coefficients[0])
+        else:
+            print_reduced_form(coefficients)
+            print("The polynomial degree is strictly greater than 2, I can't solve.")
     except ValueError as error:
         print(error)
         exit(1)
