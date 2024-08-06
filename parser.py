@@ -21,10 +21,10 @@ def pre_parser(arguments):
 
 def find_max_degree(left_terms, right_terms):
     max_degree = 0
-    for terms in chain(left_terms, right_terms):
-        if re.search(r'[xX]\^\d+\.\d+', terms):
+    for term in chain(left_terms, right_terms):
+        if re.search(r'[xX]\^\d+\.\d+', term):
             raise ValueError("Invalid exponent, must be integer")
-        match = re.findall(r'[xX]\^(\d+)', terms)
+        match = re.findall(r'[xX]\^(\d+)', term)
         if match:
             if int(match[0]) > max_degree:
                 max_degree = int(match[0])
@@ -38,14 +38,18 @@ def parser(arguments):
     right_terms = [term for term in right_terms if term]
     max_degree = find_max_degree(left_terms, right_terms)
     coefficients = [0.0] * max(3, max_degree + 1)
-    for terms in left_terms:
-        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', terms)
-        if match:
+    for term in left_terms:
+        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', term)
+        if match and len(match[0]) == 2:
             coefficients[int(match[0][1])] += float(match[0][0])
-    for terms in right_terms:
-        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', terms)
-        if match:
+        else:
+            raise ValueError(f"Invalid term format: {term}")
+    for term in right_terms:
+        match = re.findall(r'([+-]?\d*\.?\d*)\*[xX]\^(\d+)', term)
+        if match and len(match[0]) == 2:
             coefficients[int(match[0][1])] += -1 * float(match[0][0])
+        else:
+            raise ValueError(f"Invalid term format: {term}")
     print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
     print(find_max_degree(left_terms, right_terms))
     print(coefficients)
