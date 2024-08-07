@@ -37,19 +37,15 @@ def parser(arguments):
     right_terms = [term for term in right_terms if term]
     max_degree = find_max_degree(left_terms, right_terms)
     coefficients = [0.0] * max(3, max_degree + 1)
-    for term in left_terms:
+    for term in chain(left_terms, right_terms):
         match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
         if match and len(match[0]) == 2:
-            coefficients[int(match[0][1])] += float(match[0][0])
-        else:
-            raise ValueError(f"Invalid term format: {term}")
-    for term in right_terms:
-        match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
-        if match and len(match[0]) == 2:
-            coefficients[int(match[0][1])] += -1 * float(match[0][0])
+            coefficient = float(match[0][0])
+            if term in right_terms:
+                coefficient *= -1
+            coefficients[int(match[0][1])] += coefficient
         else:
             raise ValueError(f"Invalid term format: {term}")
     #print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
-    #print(find_max_degree(left_terms, right_terms))
-    #print(coefficients)
+    #print(max_degree, coefficients)
     return coefficients, max_degree
