@@ -15,11 +15,9 @@ def pre_parser(arguments):
         if seq in arguments_no_blanks:
             raise ValueError(f"Invalid sequence found: {seq}")
     identity_sides = arguments_no_blanks.split("=")
-    if len(identity_sides) != 2:
-        raise ValueError("Invalid number of equal signs")
-    if identity_sides[0] == "" or identity_sides[1] == "":
-        raise ValueError("Invalid number of expressions")
-    return(identity_sides)
+    if len(identity_sides) != 2 or not identity_sides[0] or not identity_sides[1]:
+        raise ValueError("Invalid number of identities")
+    return identity_sides
 
 def find_max_degree(left_terms, right_terms):
     max_degree = 0
@@ -27,9 +25,8 @@ def find_max_degree(left_terms, right_terms):
         if re.search(r'[xX]\^\d+\.\d+', term):
             raise ValueError("Invalid exponent, must be integer")
         match = re.findall(r'[xX]\^(\d+)', term)
-        if match:
-            if int(match[0]) > max_degree:
-                max_degree = int(match[0])
+        if match and int(match[0]) > max_degree:
+            max_degree = int(match[0])
     return max_degree
 
 def parser(arguments):
