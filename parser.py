@@ -37,15 +37,49 @@ def parser(arguments):
     right_terms = [term for term in right_terms if term]
     max_degree = find_max_degree(left_terms, right_terms)
     coefficients = [0.0] * max(3, max_degree + 1)
-    for term in chain(left_terms, right_terms):
+    for term in left_terms:
         match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
         if match and len(match[0]) == 2:
-            coefficient = float(match[0][0])
-            if term in right_terms:
-                coefficient *= -1
-            coefficients[int(match[0][1])] += coefficient
+            coefficients[int(match[0][1])] += float(match[0][0])
         else:
-            raise ValueError(f"Invalid term format: {term}")
+            #raise ValueError(f"Invalid term format: {term}")
+            free_form_parser(term, coefficients, side="left_term")
+    for term in right_terms:
+        match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]\^(\d+)$', term)
+        if match and len(match[0]) == 2:
+            coefficients[int(match[0][1])] += -1 * float(match[0][0])
+        else:
+            #raise ValueError(f"Invalid term format: {term}")
+            free_form_parser(term, coefficients, side="right_term")  
     #print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
     #print(max_degree, coefficients)
     return coefficients, max_degree
+
+def free_form_parser(term, coefficients, side):
+    if re.search(r'^([+-]?\d*\.?\d*)$', term):
+        coefficient = float(term)
+        if side == "right_term":
+            coefficient *= -1
+        coefficients[0] += coefficient
+    elif re.search(r'^[+-]?[xX]$', term):
+        match = re.findall(r'^([+-]?)[xX]$', term)
+        if (side == "right_term" and match[0] == "-") or \
+        (side == "left_term" and match[0] == "+"):
+            coefficients[1] += 1
+        else:
+            coefficients[1] -= 1
+    elif re.search(r'^[+-]?\d*\.?\d*\*[xX]$', term):
+        match = re.findall(r'^([+-]?\d*\.?\d*)\*[xX]$', term)
+        coefficient = float(match[0])
+        if side == "right_term":
+            coefficient *= -1
+        coefficients[1] += coefficient
+    elif re.search(r'^([+-]?)[xX]\^(\d+)$', term):
+        match = re.findall(r'^([+-]?)[xX]\^(\d+)$', term)
+        coefficient = 1
+        if (side == "right_term" and match[0][0] != "-") or \
+        (side == "left_term" and match[0][0] == "-"):
+            coefficient = -1
+        coefficients[int(match[0][1])] += coefficient
+    else:
+        raise ValueError(f"Invalid term format: {term}")
