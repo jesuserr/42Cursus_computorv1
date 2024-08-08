@@ -32,8 +32,10 @@ if __name__ == '__main__':
 # "x^2-x+1=0"       -> complex
 # python3 computor.py "1 * X^0 - 1 * X^1 + 1 * X^2 = 0 * x^0"
 
-# 3x^2-10x+7=0 (7/3 , 1) no funciona la fraccion
-# 3x^2-2x=0 (0, 2/3) no funciona la fraccion
+# 3x^2-10x+7=0 (7/3 , 1) no da exacta la fraccion
+# python3 computor.py "3*x^2-10*x+7=0"
+# 3x^2-2x=0 (0, 2/3) no da exacta la fraccion
+# python3 computor.py "3*x^2-2*x=0"
 
 # SUBJECT
 # python3 computor.py "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"

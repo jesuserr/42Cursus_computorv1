@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 SCALE = 2
-POINTS = 400
+POINTS = 100
 
 def plot(coefficients):
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
@@ -29,16 +29,18 @@ def plot(coefficients):
 
 def scale_calculator(a, b, c):
     if a != 0:
-        plt.title('2nd Degree Polynomial')
         discriminant = (b ** 2) - (4 * a *c)
         numerator1 = -b - (discriminant) ** 0.5
         numerator2 = -b + (discriminant) ** 0.5
         denominator = 2 * a
         if discriminant == 0:
-            numerator2 *= -1
-        elif discriminant < 0:
+            plt.title("2nd Degree Polynomial (two identical real solutions)")
+            return numerator1 / denominator, -numerator2 / denominator
+        if discriminant < 0:
+            plt.title("2nd Degree Polynomial (two complex solutions)")
             return -b / denominator, b / denominator
+        plt.title("2nd Degree Polynomial (two real solutions)")
         return numerator1 / denominator, numerator2 / denominator
     else:
-        plt.title('1st Degree Polynomial')
+        plt.title("1st Degree Polynomial (one real solution)")
         return c / -b, c / b
