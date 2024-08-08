@@ -63,6 +63,7 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     print(decimal_to_fraction(numerator2 / denominator))
 
 def solver(coefficients, max_degree):
+    coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     if (a == 0 and b == 0 and c != 0):
         raise ValueError(f"Inconsistent equation." + "\n" + "No possible solutions.")

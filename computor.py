@@ -1,6 +1,7 @@
 import sys
 from parser import parser
 from solver import solver
+from plot import plot
 
 if __name__ == '__main__':
     if (len(sys.argv) != 2):
@@ -10,6 +11,7 @@ if __name__ == '__main__':
     try:
         coefficients, max_degree = parser(sys.argv[1])
         solver(coefficients, max_degree)
+        plot(coefficients)
     except ValueError as error:
         print(error)
         exit(1)
