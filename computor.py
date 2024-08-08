@@ -4,14 +4,15 @@ from solver import solver
 from plot import plot
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 2):
+    if (len(sys.argv) not in [2, 3] or ((len(sys.argv) == 3 and sys.argv[2] != '-p'))):
         print("Invalid number of arguments")
-        print("Usage: python3 computor.py \"equation\"")
+        print("Usage: python3 computor.py \"equation\" [-p]")
         exit(1)
     try:
         coefficients, max_degree = parser(sys.argv[1])
         solver(coefficients, max_degree)
-        plot(coefficients)
+        if len(sys.argv) == 3 and sys.argv[2] == '-p':
+            plot(coefficients)
     except ValueError as error:
         print(error)
         exit(1)
