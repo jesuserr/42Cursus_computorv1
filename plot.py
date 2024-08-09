@@ -7,6 +7,9 @@ def plot(coefficients):
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     max_value = max(scale_calculator(a, b, c))
     min_value = min(scale_calculator(a, b, c))
+    if min_value == 0 and max_value == 0:
+        min_value = -1
+        max_value = 1
     max_value *= SCALE if max_value > 0 else 1 / SCALE
     min_value *= SCALE if min_value < 0 else 1 / SCALE
     x_step = (max_value - min_value) / POINTS
