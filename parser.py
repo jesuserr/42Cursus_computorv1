@@ -1,5 +1,5 @@
 import re
-from itertools import chain
+from utils import find_max_degree
 
 def pre_parser(arguments):
     allowed_chars = "0123456789*+-xX^=. "
@@ -18,16 +18,6 @@ def pre_parser(arguments):
     if len(identity_sides) != 2 or not identity_sides[0] or not identity_sides[1]:
         raise ValueError("Invalid number of identities")
     return identity_sides
-
-def find_max_degree(left_terms, right_terms):
-    max_degree = 0
-    for term in chain(left_terms, right_terms):
-        if re.search(r'[xX]\^\d+\.\d+', term):
-            raise ValueError("Invalid exponent, must be integer")
-        match = re.findall(r'[xX]\^(\d+)', term)
-        if match and int(match[0]) > max_degree:
-            max_degree = int(match[0])
-    return max_degree
 
 def parser(arguments):
     identity_sides = pre_parser(arguments)

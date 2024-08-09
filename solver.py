@@ -1,24 +1,4 @@
-DECIMAL_PRECISION = ".9f"
-
-def strip(number, justify=0):
-    if number == -0:
-        number = 0
-    return f"{number:{DECIMAL_PRECISION}}".rstrip('0').rstrip('.').ljust(justify)
-
-def gcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a
- 
-def decimal_to_fraction(number):
-    integer_part = int(number)
-    fractional_part = number - integer_part
-    precision = 1000000000
-    gcd_value = gcd(round(fractional_part * precision), precision)
-    numerator = round(fractional_part * precision) // gcd_value
-    denominator = precision // gcd_value
-    string = f"{(integer_part * denominator) + numerator} / {denominator}"
-    return (f"Irreducible fraction: {string}")
+from utils import strip, decimal_to_fraction
 
 def print_reduced_form(coefficients):
     grade = 0
