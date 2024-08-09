@@ -54,7 +54,7 @@ def solver(coefficients, max_degree):
     if (a == 0 and b == 0 and c != 0):
         raise ValueError(f"Inconsistent equation." + "\n" + "No possible solutions.")
     if (a == 0 and b == 0 and c == 0):
-        raise ValueError(f"Polynomial degree: " + str(max_degree) +
+        raise ValueError(f"{BLUE}Polynomial degree: {DEF}" + str(max_degree) +
         "\nInfinite solutions (each real number is a solution).")
     if (len(coefficients) > 3):
         print_reduced_form(coefficients)
@@ -71,7 +71,7 @@ def solver(coefficients, max_degree):
     else:
         coefficients.pop()
         print_reduced_form(coefficients)
-        print("The solution is:")
+        print(f"{BLUE}The solution is:{DEF}")
         print(f"{strip(c / -b, 30)}" + "->\t" + decimal_to_fraction(c / -b))
         print_intermediate_steps(a, b, c, type="linear")
 
