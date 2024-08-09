@@ -24,7 +24,7 @@ def plot(coefficients):
     plt.grid(True)
     plt.axhline(0, color='black', lw=0.5)
     plt.axvline(0, color='black', lw=0.5)
-    plt.xlim(x_values[0], x_values[POINTS - 1])
+    plt.xlim(x_values[0], x_values[POINTS - 1] + 1e-9)
     plt.show()
 
 def scale_calculator(a, b, c):
