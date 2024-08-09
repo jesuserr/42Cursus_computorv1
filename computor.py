@@ -6,7 +6,7 @@ from plot import plot
 if __name__ == '__main__':
     if (len(sys.argv) not in [2, 3] or ((len(sys.argv) == 3 and sys.argv[2] != '-p'))):
         print("Invalid number of arguments")
-        print("Usage: python3 computor.py \"equation\" [-p]")
+        print("Usage: python3 computor.py <\"equation\"> [-p]")
         exit(1)
     try:
         coefficients, max_degree = parser(sys.argv[1])
@@ -41,17 +41,3 @@ if __name__ == '__main__':
 # python3 computor.py "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 # python3 computor.py "5 * X^0 + 4 * X^1 = 4 * X^0"
 # python3 computor.py "8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0"
-
-'''
-Reduced form: 3 * X^2 - 2 * X = 0
-Polynomial degree: 2
-Variables: a = 3, b = -2, c = 0
-Equation form: a * X^2 + b * X + c
-Discriminant: 4
-Solutions form:
-X1 = (-b + sqrt(delta)) / (2 * a)
-X2 = (-b - sqrt(delta)) / (2 * a)
-Discriminant is stricly positive, the two solutions are:
-2 / 3
-0
-'''

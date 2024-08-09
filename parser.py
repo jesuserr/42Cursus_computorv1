@@ -40,9 +40,7 @@ def parser(arguments):
             coefficients[int(match[0][1])] += -1 * float(match[0][0])
         else:
             #raise ValueError(f"Invalid term format: {term}")
-            free_form_parser(term, coefficients, side="right_term")  
-    #print(identity_sides, left_terms, right_terms, len(left_terms), len(right_terms))
-    #print(max_degree, coefficients)
+            free_form_parser(term, coefficients, side="right_term")
     return coefficients, max_degree
 
 def free_form_parser(term, coefficients, side):
