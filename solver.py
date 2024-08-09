@@ -51,15 +51,15 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
 def solver(coefficients, max_degree):
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
+    if (len(coefficients) > 3):
+        print_reduced_form(coefficients)
+        raise ValueError("The polynomial degree is strictly greater than 2" +
+        ", I can't solve.")
     if (a == 0 and b == 0 and c != 0):
         raise ValueError(f"Inconsistent equation." + "\n" + "No possible solutions.")
     if (a == 0 and b == 0 and c == 0):
         raise ValueError(f"{BLUE}Polynomial degree: {DEF}" + str(max_degree) +
         "\nInfinite solutions (each real number is a solution).")
-    if (len(coefficients) > 3):
-        print_reduced_form(coefficients)
-        raise ValueError("The polynomial degree is strictly greater than 2" +
-        ", I can't solve.")
     if a != 0:
         discriminant = (b ** 2) - (4 * a * c)
         numerator1 = -b - (discriminant) ** 0.5
