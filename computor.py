@@ -1,19 +1,11 @@
 import sys
-import argparse
 from parser import parser
 from solver import solver
 from plot import plot
+from utils import parse_arguments
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser(add_help=False)
-    arg_parser.add_argument('equation', type=str)
-    arg_parser.add_argument("-p", '--plot', action='store_true')
-    arg_parser.add_argument('-s', '--steps', action='store_true')
-    args = arg_parser.parse_args()    
-    if any(arg.startswith('-') and len(arg) > 2 for arg in sys.argv[1:]):
-        print("usage: computor.py [-p] [-s] equation")
-        print("computor.py: error: unrecognized arguments")
-        sys.exit(1)    
+    args = parse_arguments()
     try:
         coefficients, max_degree = parser(args.equation)
         solver(coefficients, max_degree, args.steps)
