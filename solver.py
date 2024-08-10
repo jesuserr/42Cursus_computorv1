@@ -1,6 +1,5 @@
 from utils import strip, decimal_to_fraction
 
-# Color codes for printings
 BLUE = '\033[94m'
 DEF = '\033[0m'
 
@@ -48,7 +47,7 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator2 / denominator))
 
-def solver(coefficients, max_degree):
+def solver(coefficients, max_degree, steps):
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     if (len(coefficients) > 3):
@@ -67,13 +66,13 @@ def solver(coefficients, max_degree):
         denominator = 2 * a
         print_reduced_form(coefficients)
         print_results(discriminant, numerator1, numerator2, denominator, b)
-        print_intermediate_steps(a, b, c, type="quadratic")
+        print_intermediate_steps(a, b, c, type="quadratic") if steps else None
     else:
         coefficients.pop()
         print_reduced_form(coefficients)
         print(f"{BLUE}The solution is:{DEF}")
         print(f"{strip(c / -b, 30)}" + "->\t" + decimal_to_fraction(c / -b))
-        print_intermediate_steps(a, b, c, type="linear")
+        print_intermediate_steps(a, b, c, type="linear") if steps else None
 
 def print_intermediate_steps(a, b, c, type):
     print(f"{BLUE}Intermediate steps:{DEF}")

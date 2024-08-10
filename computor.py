@@ -1,21 +1,26 @@
 import sys
+import argparse
 from parser import parser
 from solver import solver
 from plot import plot
 
 if __name__ == '__main__':
-    if (len(sys.argv) not in [2, 3] or ((len(sys.argv) == 3 and sys.argv[2] != '-p'))):
-        print("Invalid number of arguments")
-        print("Usage: python3 computor.py <\"equation\"> [-p]")
-        exit(1)
+    arg_parser = argparse.ArgumentParser(add_help=False)
+    arg_parser.add_argument('equation', type=str)
+    arg_parser.add_argument("-p", '--plot', action='store_true')
+    arg_parser.add_argument('-s', '--steps', action='store_true')
+    args = arg_parser.parse_args()    
+    if any(arg.startswith('-') and len(arg) > 2 for arg in sys.argv[1:]):
+        print("usage: computor.py [-p] [-s] equation")
+        print("computor.py: error: unrecognized arguments")
+        sys.exit(1)    
     try:
-        coefficients, max_degree = parser(sys.argv[1])
-        solver(coefficients, max_degree)
-        if len(sys.argv) == 3 and sys.argv[2] == '-p':
-            plot(coefficients)
+        coefficients, max_degree = parser(args.equation)
+        solver(coefficients, max_degree, args.steps)
+        plot(coefficients) if args.plot else None
     except ValueError as error:
         print(error)
-        exit(1)
+        sys.exit(1)
 
 # "2x^2-5x+3=0"     -> two solutions
 # python3 computor.py "3 * X^0 -5 * X^1 + 2 * X^2 = 0 * x^0"
