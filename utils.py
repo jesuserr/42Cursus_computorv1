@@ -34,13 +34,17 @@ def decimal_to_fraction(number):
     return (f"Irreducible fraction: {string}")
 
 def parse_arguments():
-    arg_parser = argparse.ArgumentParser(add_help=False)
+    msg = "python3 computor.py [-p] [-s] equation\n"
+    msg += "[-p]: plot the equation\n"
+    msg += "[-s]: show intermediate steps\n"
+    msg += "equation: e.g. \"4 * X^0 + 4 * X^1 - 9.3 * X^2 = 0\""
+    arg_parser = argparse.ArgumentParser(add_help=False, usage=msg)
     arg_parser.add_argument('equation', type=str)
     arg_parser.add_argument("-p", '--plot', action='store_true')
     arg_parser.add_argument('-s', '--steps', action='store_true')
     args = arg_parser.parse_args()
     if any(arg.startswith('-') and len(arg) > 2 for arg in sys.argv[1:]):
-        print("usage: computor.py [-p] [-s] equation")
+        print("usage: " + msg)
         print("computor.py: error: unrecognized arguments")
         sys.exit(1)
     return args
