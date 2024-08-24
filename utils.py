@@ -2,6 +2,7 @@ import re
 import argparse
 import sys
 from itertools import chain
+#from fractions import Fraction
 
 def find_max_degree(left_terms, right_terms):
     max_degree = 0
@@ -24,6 +25,7 @@ def gcd(a, b):
     return a
  
 def decimal_to_fraction(number):
+    #return (f"Irreducible fraction: {Fraction(number).limit_denominator()}")
     integer_part = int(number)
     fractional_part = number - integer_part
     precision = 1000000000

@@ -48,6 +48,7 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     print(decimal_to_fraction(numerator2 / denominator))
 
 def solver(coefficients, max_degree, steps):
+    # Creates copy of coefficients list since is modified when a = 0
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     if (len(coefficients) > 3):
