@@ -7,8 +7,8 @@ from utils import parse_arguments
 if __name__ == '__main__':
     args = parse_arguments()
     try:
-        coefficients, max_degree = parser(args.equation)
-        solver(coefficients, max_degree, args.steps)
+        coefficients = parser(args.equation)
+        solver(coefficients, args.steps)
         plot(coefficients) if args.plot else None
     except ValueError as error:
         print(error)

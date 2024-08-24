@@ -47,18 +47,18 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
     print(decimal_to_fraction(numerator2 / denominator))
 
-def solver(coefficients, max_degree, steps):
+def solver(coefficients, steps):
     # Creates copy of coefficients list since is modified when a = 0
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
-    if (len(coefficients) > 3):
+    if (len(coefficients) > 3 and not all(coef == 0 for coef in coefficients)):
         print_reduced_form(coefficients)
         raise ValueError("The polynomial degree is strictly greater than 2" +
         ", I can't solve.")
     if (a == 0 and b == 0 and c != 0):
         raise ValueError(f"Inconsistent equation." + "\n" + "No possible solutions.")
-    if (a == 0 and b == 0 and c == 0):
-        raise ValueError(f"{BLUE}Polynomial degree: {DEF}" + str(max_degree) +
+    if all(coef == 0 for coef in coefficients):
+        raise ValueError(f"{BLUE}Polynomial degree: {DEF}" + "Not Applicable" +
         "\nInfinite solutions (each real number is a solution).")
     if a != 0:
         discriminant = (b ** 2) - (4 * a * c)

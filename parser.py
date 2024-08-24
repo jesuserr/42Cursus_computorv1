@@ -40,7 +40,7 @@ def parser(arguments):
             coefficients[int(match[0][1])] += -1 * float(match[0][0])
         else:
             free_form_parser(term, coefficients, side="right_term")
-    return coefficients, max_degree
+    return coefficients
 
 def free_form_parser(term, coefficients, side):
     if re.search(r'^([+-]?\d*\.?\d*)$', term):          # Single coeff. ("4")
