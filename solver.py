@@ -24,13 +24,31 @@ def print_reduced_form(coefficients):
         grade += 1
     print(f"{BLUE}Polynomial degree: {DEF}" + str((len(coefficients) - 1)))
 
-def print_complex_solution(numerator, denominator, discriminant, b, sign):
-    print(f"{strip(numerator / denominator, 30)}" + "->\t", end="")
+def print_irreducible_complex(numerator, denominator, discriminant, b, sign):
+    if sign == "-":
+        print(f"{BLUE}Irreducible fractions: {DEF}")
+    print(f"{strip(numerator / denominator, 30)}" + "->\t(", end="")
     print(decimal_to_fraction(-b / denominator), end="")
-    print(f" {sign}" + " (√" + f"{strip(discriminant)}" + " / ", end="")
+    print(f") {sign}" + " (√" + f"{strip(discriminant)}" + " / ", end="")
     print(f"{strip(denominator)}" + ")")
 
-def print_results(discriminant, numerator1, numerator2, denominator, b):
+def print_irreducible_fractions(numerator1, numerator2, denominator):
+    if numerator1 == numerator2:
+        print(f"{BLUE}Irreducible fraction: {DEF}")
+        print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
+        print(decimal_to_fraction(numerator1 / denominator))                                  
+        return
+    print(f"{BLUE}Irreducible fractions: {DEF}")
+    print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
+    print(decimal_to_fraction(numerator1 / denominator))
+    print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
+    print(decimal_to_fraction(numerator2 / denominator))
+
+def print_results(a, b, c, irreducible):
+    discriminant = (b ** 2) - (4 * a * c)
+    numerator1 = -b - (discriminant) ** 0.5
+    numerator2 = -b + (discriminant) ** 0.5
+    denominator = 2 * a
     print(f"{BLUE}", end="")
     if discriminant > 0:
         print(f"Discriminant is strictly positive, the two solutions are:{DEF}")
@@ -39,15 +57,15 @@ def print_results(discriminant, numerator1, numerator2, denominator, b):
     else:
         print(f"Discriminant is strictly negative, ", end="")
         print(f"the two complex solutions are:{DEF}")
-        print_complex_solution(numerator1, denominator, discriminant, b, sign="-")
-        print_complex_solution(numerator2, denominator, discriminant, b, sign="+")
-        return
-    print(f"{strip(numerator1 / denominator, 30)}" + "->\t", end="")
-    print(decimal_to_fraction(numerator1 / denominator))
-    print(f"{strip(numerator2 / denominator, 30)}" + "->\t", end="")
-    print(decimal_to_fraction(numerator2 / denominator))
+    print(f"{strip(numerator1 / denominator, 30)}")
+    print(f"{strip(numerator2 / denominator, 30)}")
+    if irreducible and discriminant >= 0:
+        print_irreducible_fractions(numerator1, numerator2, denominator)
+    elif irreducible and discriminant < 0:        
+        print_irreducible_complex(numerator1, denominator, discriminant, b, "-")
+        print_irreducible_complex(numerator2, denominator, discriminant, b, "+")
 
-def solver(coefficients, steps):
+def solver(coefficients, steps, irreducible):
     # Creates copy of coefficients list since is modified when a = 0
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
@@ -61,18 +79,14 @@ def solver(coefficients, steps):
         raise ValueError(f"{BLUE}Polynomial degree: {DEF}" + "Not Applicable" +
         "\nInfinite solutions (each real number is a solution).")
     if a != 0:
-        discriminant = (b ** 2) - (4 * a * c)
-        numerator1 = -b - (discriminant) ** 0.5
-        numerator2 = -b + (discriminant) ** 0.5
-        denominator = 2 * a
         print_reduced_form(coefficients)
-        print_results(discriminant, numerator1, numerator2, denominator, b)
+        print_results(a, b, c, irreducible)
         print_intermediate_steps(a, b, c, type="quadratic") if steps else None
     else:
         coefficients.pop()
         print_reduced_form(coefficients)
-        print(f"{BLUE}The solution is:{DEF}")
-        print(f"{strip(c / -b, 30)}" + "->\t" + decimal_to_fraction(c / -b))
+        print(f"{BLUE}The solution is:{DEF}\n" + f"{strip(c / -b, 30)}")
+        print_irreducible_fractions(c, c, -b) if irreducible else None
         print_intermediate_steps(a, b, c, type="linear") if steps else None
 
 def print_intermediate_steps(a, b, c, type):
