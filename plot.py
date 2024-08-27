@@ -24,8 +24,8 @@ def plot(coefficients):
     plt.ylabel('y')
     plt.legend()
     plt.grid(True)
-    plt.axhline(0, color='black', lw=0.5)
-    plt.axvline(0, color='black', lw=0.5)
+    plt.axhline(0, color='black', lw=2.0)
+    plt.axvline(0, color='black', lw=2.0)
     plt.xlim(x_values[0], x_values[POINTS - 1] + 1e-9)
     plt.show()
 
@@ -37,12 +37,16 @@ def scale_calculator(a, b, c):
         denominator = 2 * a
         if discriminant == 0:
             plt.title("2nd Degree Polynomial (two identical real solutions)")
+            plt.scatter(numerator1 / denominator, 0, color='blue', s=50)            
             return numerator1 / denominator, -numerator2 / denominator
         if discriminant < 0:
             plt.title("2nd Degree Polynomial (two complex solutions)")
             return -b / denominator, b / denominator
         plt.title("2nd Degree Polynomial (two real solutions)")
+        plt.scatter(numerator1 / denominator, 0, color='blue', s=50)
+        plt.scatter(numerator2 / denominator, 0, color='blue', s=50)
         return numerator1 / denominator, numerator2 / denominator
     else:
         plt.title("1st Degree Polynomial (one real solution)")
+        plt.scatter(c / -b, 0, color='blue', s=50)
         return c / -b, c / b
