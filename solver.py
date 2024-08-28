@@ -69,7 +69,7 @@ def solver(coefficients, steps, irreducible):
     # Creates copy of coefficients list since is modified when a = 0
     coefficients = coefficients[:]
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
-    if (len(coefficients) > 3 and not all(coef == 0 for coef in coefficients)):
+    if (len(coefficients) > 3 and not all(coef == 0 for coef in coefficients[3:])):
         print_reduced_form(coefficients)
         raise ValueError("The polynomial degree is strictly greater than 2" +
         ", I can't solve.")
