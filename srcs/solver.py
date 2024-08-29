@@ -1,4 +1,4 @@
-from utils import strip, decimal_to_fraction
+from srcs.utils import strip, decimal_to_fraction
 
 BLUE = '\033[94m'
 DEF = '\033[0m'

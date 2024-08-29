@@ -1,8 +1,8 @@
 import sys
-from parser import parser
-from solver import solver
-from plot import plot
-from utils import parse_arguments
+from srcs.parser import parser
+from srcs.solver import solver
+from srcs.plot import plot
+from srcs.utils import parse_arguments
 
 if __name__ == '__main__':
     args = parse_arguments()

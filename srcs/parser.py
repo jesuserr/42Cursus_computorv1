@@ -1,5 +1,5 @@
 import re
-from utils import find_max_degree
+from srcs.utils import find_max_degree
 
 def pre_parser(arguments):
     allowed_chars = "0123456789*+-xX^=. "
