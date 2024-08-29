@@ -4,25 +4,30 @@ BLUE = '\033[94m'
 DEF = '\033[0m'
 
 def print_reduced_form(coefficients):
-    grade = 0
+    real_degree = len(coefficients) - 1
+    for coefficient in coefficients[::-1]:          # Iterates in reverse order
+        if coefficient != 0:
+            break
+        real_degree -= 1
+    degree = 0
     print(f"{BLUE}Reduced form: {DEF}", end="")
     for coefficient in coefficients:
         if coefficient > 0:
-            if grade != 0:
+            if degree != 0:
                 print(f"+ ", end="")
-            print(f"{strip(coefficient)}"+ f" * X^{grade} ", end="")
+            print(f"{strip(coefficient)}"+ f" * X^{degree} ", end="")
         elif coefficient < 0:
             print(f"- ", end="")
-            print(f"{strip(abs(coefficient))}" + f" * X^{grade} ", end="")
+            print(f"{strip(abs(coefficient))}" + f" * X^{degree} ", end="")
         else:
-            if grade != 0:
+            if degree != 0:
                 print(f"+ ", end="")
-            print(f"0" + f" * X^{grade} ", end="")
-        if (grade == len(coefficients) - 1):
+            print(f"0" + f" * X^{degree} ", end="")
+        if (degree == real_degree):
             print("= 0")
             break
-        grade += 1
-    print(f"{BLUE}Polynomial degree: {DEF}" + str((len(coefficients) - 1)))
+        degree += 1
+    print(f"{BLUE}Polynomial degree: {DEF}" + str(real_degree))
 
 def print_irreducible_complex(numerator, denominator, discriminant, b, sign):
     if sign == "-":
