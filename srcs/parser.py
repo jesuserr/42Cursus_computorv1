@@ -51,7 +51,7 @@ def free_form_parser(term, coefficients, side):
     elif re.search(r'^[+-]?[xX]$', term):               # Single x term ("x")
         match = re.findall(r'^([+-]?)[xX]$', term)
         if (side == "right_term" and match[0] == "-") or \
-        (side == "left_term" and match[0] == "+"):
+        (side == "left_term" and match[0] != "-"):
             coefficients[1] += 1
         else:
             coefficients[1] -= 1

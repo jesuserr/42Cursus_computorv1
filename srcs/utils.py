@@ -35,18 +35,21 @@ def decimal_to_fraction(number):
     return f"{(integer_part * denominator) + numerator} / {denominator}"
 
 def parse_arguments():
-    msg = "python3 computor.py [-p] [-s] [-i] equation\n"
+    # Trick to avoid argparse error for negative numbers on equation with no spaces
+    if len(sys.argv) > 1:
+        sys.argv[1] = sys.argv[1] + " "
+    msg = "python3 computor.py equation [-p] [-s] [-i]\n"
+    msg += "equation: e.g. \"4 * X^0 + 4 * X^1 - 9.3 * X^2 = 0\"\n"
     msg += "[-p]: plot the equation\n"
     msg += "[-s]: show intermediate steps\n"
-    msg += "[-i]: show irreducible fractions\n"
-    msg += "equation: e.g. \"4 * X^0 + 4 * X^1 - 9.3 * X^2 = 0\""
+    msg += "[-i]: show irreducible fractions"
     arg_parser = argparse.ArgumentParser(add_help=False, usage=msg)
     arg_parser.add_argument('equation', type=str)
     arg_parser.add_argument("-p", '--plot', action='store_true')
     arg_parser.add_argument('-s', '--steps', action='store_true')
     arg_parser.add_argument('-i', '--irreducible', action='store_true')
     args = arg_parser.parse_args()
-    if any(arg.startswith('-') and len(arg) > 2 for arg in sys.argv[1:]):
+    if any(arg.startswith('-') and len(arg) > 2 for arg in sys.argv[2:]):
         print("usage: " + msg)
         print("computor.py: error: unrecognized arguments")
         sys.exit(1)
