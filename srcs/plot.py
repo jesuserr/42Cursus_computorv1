@@ -3,12 +3,13 @@ import matplotlib.pyplot as plt
 SCALE = 2
 POINTS = 100
 
+
 def plot(coefficients):
     a, b, c = coefficients[2], coefficients[1], coefficients[0]
     max_value = max(scale_calculator(a, b, c))
     min_value = min(scale_calculator(a, b, c))
     min_value = -1 if min_value == 0 else min_value
-    max_value = 1 if max_value == 0 else max_value    
+    max_value = 1 if max_value == 0 else max_value
     max_value *= SCALE if max_value > 0 else 1 / SCALE
     min_value *= SCALE if min_value < 0 else 1 / SCALE
     x_step = (max_value - min_value) / POINTS
@@ -29,15 +30,16 @@ def plot(coefficients):
     plt.xlim(x_values[0], x_values[POINTS - 1] + 1e-9)
     plt.show()
 
+
 def scale_calculator(a, b, c):
     if a != 0:
-        discriminant = (b ** 2) - (4 * a *c)
+        discriminant = (b ** 2) - (4 * a * c)
         numerator1 = -b - (discriminant) ** 0.5
         numerator2 = -b + (discriminant) ** 0.5
         denominator = 2 * a
         if discriminant == 0:
             plt.title("2nd Degree Polynomial (two identical real solutions)")
-            plt.scatter(numerator1 / denominator, 0, color='blue', s=50)            
+            plt.scatter(numerator1 / denominator, 0, color='blue', s=50)
             return numerator1 / denominator, -numerator2 / denominator
         if discriminant < 0:
             plt.title("2nd Degree Polynomial (two complex solutions)")

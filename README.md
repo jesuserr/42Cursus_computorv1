@@ -150,6 +150,29 @@ The solution is:
 
 Test coverage includes: two real solutions, identical solutions, complex solutions, linear equations, higher degrees, infinite/inconsistent equations, and various formats.
 
+## Code Style
+
+The codebase is [PEP8](https://peps.python.org/pep-0008/) compliant and passes [flake8](https://flake8.pycqa.org/) with no warnings.
+
+### Running flake8
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install flake8
+flake8 computor.py srcs/*.py
+deactivate
+```
+
+### What was changed to achieve compliance
+- Wrapped lines exceeding 79 characters, mostly long `print`/`raise` statements and regex calls, using parentheses for continuation instead of backslashes
+- Normalized spacing to exactly 2 blank lines between top-level function definitions
+- Removed trailing whitespace
+- Removed dead, commented-out code (an unused `fractions.Fraction` alternative)
+- Fixed missing/extra whitespace around operators (e.g. `4 * a *c` → `4 * a * c`)
+- Removed unnecessary `f""` string prefixes on literals with no placeholders
+- Added missing trailing newlines at end of file
+
 ## Error Handling
 
 - Invalid characters or digit separation
